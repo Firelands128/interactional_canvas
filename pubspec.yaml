@@ -1,7 +1,7 @@
 name: interactional_canvas
 description: "The flutter package that operating interactive canvas."
 version: 0.0.1
-repository: https://github.com/Firelands128/interactive_canvas
+repository: https://github.com/Firelands128/interactional_canvas
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
