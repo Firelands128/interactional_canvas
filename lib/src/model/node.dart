@@ -8,7 +8,6 @@ class Node<T> {
     required this.offset,
     required this.child,
     this.label,
-    this.resizeMode = ResizeMode.disabled,
     this.allowMove = true,
     this.value,
   });
@@ -21,7 +20,6 @@ class Node<T> {
   String? label;
   T? value;
   final Widget child;
-  final ResizeMode resizeMode;
   bool resizing = false;
   final bool allowMove;
 
@@ -32,24 +30,10 @@ class Node<T> {
       this.offset = offset;
     }
 
-    if (size != null && resizeMode.isEnabled) {
+    if (size != null) {
       this.size = size;
     }
 
     if (label != null) this.label = label;
   }
-}
-
-enum ResizeMode {
-  disabled,
-  corners,
-  edges,
-  cornersAndEdges;
-
-  bool get isEnabled => this != ResizeMode.disabled;
-
-  bool get containsCornerHandles =>
-      this == ResizeMode.corners || this == ResizeMode.cornersAndEdges;
-
-  bool get containsEdgeHandles => this == ResizeMode.edges || this == ResizeMode.cornersAndEdges;
 }

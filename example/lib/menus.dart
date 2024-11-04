@@ -65,7 +65,6 @@ class _MenusState extends State<Menus> {
             final node = Node(
               key: UniqueKey(),
               label: 'Node ${widget.controller.nodes.length}',
-              resizeMode: ResizeMode.cornersAndEdges,
               offset: widget.controller.mousePosition,
               size: Size.square(Random().nextDouble() * 200 + 100),
               child: Circle(color: RandomColor().randomColor()),
@@ -82,7 +81,6 @@ class _MenusState extends State<Menus> {
             final node = Node(
               key: UniqueKey(),
               label: 'Node ${widget.controller.nodes.length}',
-              resizeMode: ResizeMode.cornersAndEdges,
               offset: widget.controller.mousePosition,
               size: Size(
                 Random().nextDouble() * 200 + 100,
@@ -102,7 +100,6 @@ class _MenusState extends State<Menus> {
             final node = Node(
               key: UniqueKey(),
               label: 'Node ${widget.controller.nodes.length}',
-              resizeMode: ResizeMode.cornersAndEdges,
               offset: widget.controller.mousePosition,
               size: Size(
                 Random().nextDouble() * 200 + 100,

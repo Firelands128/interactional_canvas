@@ -29,7 +29,6 @@ class _MyAppState extends State<MyApp> {
       return Node(
         key: UniqueKey(),
         label: 'Node $index',
-        resizeMode: ResizeMode.cornersAndEdges,
         offset: Offset(
           Random().nextDouble() * 5000,
           Random().nextDouble() * 5000,

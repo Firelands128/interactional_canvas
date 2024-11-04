@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:interactional_canvas/interactional_canvas.dart';
 
-import '../controller/canvas_controller.dart';
-import '../model/node.dart';
 import 'resize_handler.dart';
 
 class NodeRenderer extends StatelessWidget {
@@ -10,12 +9,14 @@ class NodeRenderer extends StatelessWidget {
     required this.node,
     required this.controller,
     required this.gridSize,
+    required this.resizeMode,
     required this.resizeHandlerSize,
   });
 
   final Node node;
   final CanvasController controller;
   final Size gridSize;
+  final ResizeMode resizeMode;
   final double resizeHandlerSize;
 
   static const double borderInset = 0;
@@ -24,9 +25,8 @@ class NodeRenderer extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
     final fonts = Theme.of(context).textTheme;
-    final showCornerHandles =
-        node.resizeMode.containsCornerHandles && controller.isSelected(node.key);
-    final showEdgeHandles = node.resizeMode.containsEdgeHandles && controller.isSelected(node.key);
+    final showCornerHandles = resizeMode.containsCornerHandles && controller.isSelected(node.key);
+    final showEdgeHandles = resizeMode.containsEdgeHandles && controller.isSelected(node.key);
     return SizedBox.fromSize(
       size: node.size,
       child: Stack(clipBehavior: Clip.none, children: [

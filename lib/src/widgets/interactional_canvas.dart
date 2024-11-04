@@ -20,6 +20,7 @@ class InteractionalCanvas extends StatefulWidget {
     this.gridSize = const Size.square(50),
     this.backgroundBuilder,
     this.drawVisibleOnly = false,
+    this.resizeMode = ResizeMode.corners,
     this.resizeHandlerSize = 10,
   });
 
@@ -27,6 +28,7 @@ class InteractionalCanvas extends StatefulWidget {
   final Size gridSize;
   final Widget Function(BuildContext, Rect)? backgroundBuilder;
   final bool drawVisibleOnly;
+  final ResizeMode resizeMode;
   final double resizeHandlerSize;
 
   @override
@@ -294,6 +296,7 @@ class InteractionalCanvasState extends State<InteractionalCanvas> {
                                       node: e,
                                       controller: controller,
                                       gridSize: widget.gridSize,
+                                      resizeMode: widget.resizeMode,
                                       resizeHandlerSize: widget.resizeHandlerSize,
                                     ),
                                   ))
