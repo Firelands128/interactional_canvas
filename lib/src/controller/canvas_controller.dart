@@ -332,6 +332,16 @@ class CanvasController extends ChangeNotifier implements Graph {
     notifyListeners();
   }
 
+  void addAll(List<Node> children) {
+    if (_formatter != null) {
+      for (var child in children) {
+        _formatter!(child);
+      }
+    }
+    nodes.addAll(children);
+    notifyListeners();
+  }
+
   void update(Node child) {
     final idx = nodes.indexWhere((e) => e.key == child.key);
     nodes[idx] = child;
