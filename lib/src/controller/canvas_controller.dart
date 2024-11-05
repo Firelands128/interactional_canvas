@@ -12,15 +12,19 @@ typedef NodeFormatter = void Function(Node);
 /// A controller for the [InteractionalCanvas].
 class CanvasController extends ChangeNotifier implements Graph {
   CanvasController({
-    this.nodes = const [],
+    List<Node> nodes = const [],
     this.keepRatio = false,
     this.showGrid = true,
     this.snapMovementToGrid = true,
     this.snapResizeToGrid = true,
-  });
+  }) {
+    if (nodes.isNotEmpty) {
+      this.nodes.addAll(nodes);
+    }
+  }
 
   @override
-  final List<Node> nodes;
+  final List<Node> nodes = [];
   bool keepRatio;
   bool showGrid;
   bool snapMovementToGrid;
