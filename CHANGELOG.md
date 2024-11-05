@@ -1,3 +1,7 @@
+## 0.0.6
+
+Fix bug in ```CanvasController```.
+
 ## 0.0.5
 
 Add "keepRatio" state in ```CanvasController```, and simplify code.
