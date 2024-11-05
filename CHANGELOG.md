@@ -1,3 +1,11 @@
+## 0.0.5
+
+Add "keepRatio" state in ```CanvasController```, and simplify code.
+
+Update resizing default mode.
+
+Update example app.
+
 ## 0.0.4
 
 Extract ```ResizeMode``` enum.
