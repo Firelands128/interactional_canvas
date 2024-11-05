@@ -62,6 +62,7 @@ class _MyAppState extends State<MyApp> {
                     drawVisibleOnly: true,
                     controller: controller,
                     gridSize: gridSize,
+                    resizeMode: ResizeMode.edges,
                   ),
                   const Positioned(
                     right: 10,
