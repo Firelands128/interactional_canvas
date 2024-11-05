@@ -280,6 +280,11 @@ class _MenusState extends State<Menus> {
       label: 'Settings',
       menuChildren: [
         MenuEntry(
+          label: 'Keep Ratio',
+          isActivated: () => widget.controller.keepRatio,
+          onPressed: widget.controller.toggleKeepRatio,
+        ),
+        MenuEntry(
           label: 'Show Grid',
           isActivated: () => widget.controller.showGrid,
           onPressed: widget.controller.toggleShowGrid,
