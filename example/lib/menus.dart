@@ -288,11 +288,6 @@ class _MenusState extends State<Menus> {
           label: 'Show Grid',
           isActivated: () => widget.controller.showGrid,
           onPressed: widget.controller.toggleShowGrid,
-          shortcut: const SingleActivator(
-            LogicalKeyboardKey.keyG,
-            meta: true,
-            alt: true,
-          ),
         ),
         MenuEntry(
           label: 'Snap To Grid',
