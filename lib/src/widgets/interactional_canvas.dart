@@ -17,17 +17,17 @@ class InteractionalCanvas extends StatefulWidget {
   const InteractionalCanvas({
     super.key,
     required this.controller,
-    this.gridSize = const Size.square(50),
-    this.backgroundBuilder,
     this.drawVisibleOnly = false,
+    this.backgroundBuilder,
+    this.gridSize = const Size.square(50),
     this.resizeMode = ResizeMode.corners,
     this.resizeHandlerSize = 10,
   });
 
   final CanvasController controller;
-  final Size gridSize;
-  final Widget Function(BuildContext, Rect)? backgroundBuilder;
   final bool drawVisibleOnly;
+  final Widget Function(BuildContext, Rect)? backgroundBuilder;
+  final Size gridSize;
   final ResizeMode resizeMode;
   final double resizeHandlerSize;
 
