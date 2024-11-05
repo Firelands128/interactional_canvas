@@ -13,16 +13,15 @@ class ResizeHandler extends StatefulWidget {
     required this.alignment,
     required this.gridSize,
     required this.size,
-  }) {
-    minimumNodeSize = Size(size * 3, size * 3);
-  }
+    required this.minimumNodeSize,
+  });
 
   final CanvasController controller;
   final Node node;
   final ResizeHandlerAlignment alignment;
   final Size gridSize;
   final double size;
-  late final Size minimumNodeSize;
+  final Size minimumNodeSize;
 
   @override
   State<ResizeHandler> createState() => _ResizeHandlerState();

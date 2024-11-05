@@ -21,6 +21,14 @@ class NodeRenderer extends StatelessWidget {
 
   static const double borderInset = 0;
 
+  Size get minimumNodeSize {
+    if (resizeMode.containsEdgeHandles) {
+      return Size(resizeHandlerSize * 3, resizeHandlerSize * 3);
+    } else {
+      return Size(resizeHandlerSize * 2, resizeHandlerSize * 2);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
@@ -91,6 +99,7 @@ class NodeRenderer extends StatelessWidget {
       alignment: resizeHandlerAlignment,
       gridSize: gridSize,
       size: resizeHandlerSize,
+      minimumNodeSize: minimumNodeSize,
     );
   }
 }
