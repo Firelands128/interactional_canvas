@@ -91,7 +91,7 @@ class _ResizeHandlerState extends State<ResizeHandler> {
       newBounds = Rect.fromLTRB(newBounds.left, newBounds.top, newBounds.right, bottom);
     }
 
-    if (controller.shiftPressed) {
+    if (controller.shiftPressed || controller.keepRatio) {
       final ratio =
           (initialBounds.width * newBounds.width + initialBounds.height * newBounds.height) /
               (pow(initialBounds.width, 2) + pow(initialBounds.height, 2));

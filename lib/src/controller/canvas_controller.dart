@@ -12,43 +12,23 @@ typedef NodeFormatter = void Function(Node);
 /// A controller for the [InteractionalCanvas].
 class CanvasController extends ChangeNotifier implements Graph {
   CanvasController({
-    List<Node> nodes = const [],
-    bool showGrid = true,
-    bool snapMovementToGrid = true,
-    bool snapResizeToGrid = true,
-  }) {
-    if (nodes.isNotEmpty) {
-      this.nodes.addAll(nodes);
-    }
-    _showGrid = showGrid;
-    _snapMovementToGrid = snapMovementToGrid;
-    _snapResizeToGrid = snapResizeToGrid;
-  }
+    this.nodes = const [],
+    this.keepRatio = false,
+    this.showGrid = true,
+    this.snapMovementToGrid = true,
+    this.snapResizeToGrid = true,
+  });
+
+  @override
+  final List<Node> nodes;
+  bool keepRatio;
+  bool showGrid;
+  bool snapMovementToGrid;
+  bool snapResizeToGrid;
 
   double minScale = 0.4;
   double maxScale = 4;
   final focusNode = FocusNode();
-
-  @override
-  final List<Node> nodes = [];
-
-  late bool _showGrid;
-
-  bool get showGrid => _showGrid;
-
-  set showGrid(newValue) => _showGrid = newValue;
-
-  late bool _snapMovementToGrid;
-
-  bool get snapMovementToGrid => _snapMovementToGrid;
-
-  set snapMovementToGrid(newValue) => _snapMovementToGrid = newValue;
-
-  late bool _snapResizeToGrid;
-
-  bool get snapResizeToGrid => _snapResizeToGrid;
-
-  set snapResizeToGrid(newValue) => _snapResizeToGrid = newValue;
 
   final Set<Key> _selected = {};
 
@@ -489,6 +469,12 @@ class CanvasController extends ChangeNotifier implements Graph {
     final scale = matrix.getMaxScaleOnAxis();
     final size = constraints.biggest;
     return offset & size / scale;
+  }
+
+  void toggleKeepRatio() {
+    final newKeepRatio = !keepRatio;
+    keepRatio = newKeepRatio;
+    notifyListeners();
   }
 
   void toggleShowGrid() {
