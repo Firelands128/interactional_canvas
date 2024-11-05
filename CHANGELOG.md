@@ -1,3 +1,11 @@
+## 0.0.4
+
+Extract ```ResizeMode``` enum.
+
+Expose "resizeMode" property to ```InteractionalCanvas``` instead of ```Node```.
+
+Use different "minimumNodeSize" according to ```ResizeMode```.
+
 ## 0.0.3
 
 Add "addAll" method of CanvasController.
