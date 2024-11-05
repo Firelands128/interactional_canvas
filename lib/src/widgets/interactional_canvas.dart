@@ -20,7 +20,7 @@ class InteractionalCanvas extends StatefulWidget {
     this.drawVisibleOnly = false,
     this.backgroundBuilder,
     this.gridSize = const Size.square(50),
-    this.resizeMode = ResizeMode.corners,
+    this.resizeMode = ResizeMode.cornersAndEdges,
     this.resizeHandlerSize = 10,
   });
 
