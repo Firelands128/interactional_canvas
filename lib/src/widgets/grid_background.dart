@@ -22,7 +22,7 @@ class GridBackground extends StatelessWidget {
 
     final colors = Theme.of(context).colorScheme;
     return Material(
-      color: colors.background,
+      type: MaterialType.transparency,
       child: Stack(
         clipBehavior: Clip.none,
         children: <Widget>[
