@@ -1,3 +1,7 @@
+## 0.0.7
+
+Use transparency material type, instead of background color in theme.
+
 ## 0.0.6
 
 Fix bug in ```CanvasController```.
