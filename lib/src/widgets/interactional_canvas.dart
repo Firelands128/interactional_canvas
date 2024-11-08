@@ -222,7 +222,7 @@ class InteractionalCanvasState extends State<InteractionalCanvas> {
           controller.checkSelection(localPosition);
           if (controller.spacePressed) return;
           if ((controller.selection.isNotEmpty && controller.shiftPressed) ||
-              (!controller.selection.isNotEmpty)) {
+              (controller.selection.isEmpty)) {
             controller.marqueeStart = localPosition;
             controller.marqueeEnd = localPosition;
           }
