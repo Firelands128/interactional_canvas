@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:interactional_canvas/interactional_canvas.dart';
 
-class Triangle extends StatefulWidget {
+class Triangle extends StatelessWidget {
   const Triangle({
     super.key,
     required this.color,
@@ -10,15 +10,10 @@ class Triangle extends StatefulWidget {
   final Color color;
 
   @override
-  State<Triangle> createState() => _TriangleState();
-}
-
-class _TriangleState extends State<Triangle> {
-  @override
   Widget build(BuildContext context) {
     return CustomPaint(
       painter: NodePainter(
-        brush: Paint()..color = widget.color,
+        brush: Paint()..color = color,
         builder: (Paint brush, Canvas canvas, Rect rect) {
           final path = Path()
             ..moveTo(rect.left, rect.bottom)
