@@ -17,6 +17,8 @@ class CanvasController extends ChangeNotifier implements Graph {
     this.showGrid = true,
     this.snapMovementToGrid = true,
     this.snapResizeToGrid = true,
+    this.onSelect,
+    this.onDeselect,
   }) {
     if (nodes.isNotEmpty) {
       this.nodes.addAll(nodes);
@@ -29,17 +31,21 @@ class CanvasController extends ChangeNotifier implements Graph {
   bool showGrid;
   bool snapMovementToGrid;
   bool snapResizeToGrid;
+  final ValueChanged<List<Node>>? onSelect;
+  final ValueChanged<List<Node>>? onDeselect;
 
   double minScale = 0.4;
   double maxScale = 4;
   final focusNode = FocusNode();
 
   final Set<Key> _selected = {};
-
-  List<Node> get selection => nodes.where((e) => _selected.contains(e.key)).toList();
   final Set<Key> _hovered = {};
 
+  List<Node> get selection => nodes.where((e) => _selected.contains(e.key)).toList();
+
   List<Node> get hovered => nodes.where((e) => _hovered.contains(e.key)).toList();
+
+  List<Node> getNodeList(Set<Key> keys) => nodes.where((e) => keys.contains(e.key)).toList();
 
   void _cacheSelectedOrigins() {
     _selectedOrigins.clear();
@@ -258,43 +264,27 @@ class CanvasController extends ChangeNotifier implements Graph {
     notifyListeners();
   }
 
-  void select(Key key, [bool hover = false]) {
-    if (hover) {
-      _hovered.add(key);
-    } else {
-      _selected.add(key);
-      _cacheSelectedOrigin(key);
-    }
-
-    notifyListeners();
-  }
-
   void setSelection(Set<Key> keys, [bool hover = false]) {
     if (hover) {
       _hovered.clear();
       _hovered.addAll(keys);
     } else {
-      _selected.clear();
-      _selected.addAll(keys);
+      final toDeselect = _selected.difference(keys);
+      final toSelect = keys.difference(_selected);
+      _selected.removeAll(toDeselect);
+      _selected.addAll(toSelect);
+      if (onDeselect != null) onDeselect!(getNodeList(toDeselect));
+      if (onSelect != null) onSelect!(getNodeList(toSelect));
       _cacheSelectedOrigins();
     }
     notifyListeners();
   }
 
   void selectAll() {
-    _selected.clear();
-    _selected.addAll(nodes.map((e) => e.key).toList());
+    final toSelect = nodes.map((e) => e.key).toSet().difference(_selected);
+    _selected.addAll(toSelect);
+    if (onSelect != null) onSelect!(getNodeList(toSelect));
     _cacheSelectedOrigins();
-    notifyListeners();
-  }
-
-  void deselect(Key key, [bool hover = false]) {
-    if (hover) {
-      _hovered.remove(key);
-    } else {
-      _selected.remove(key);
-      _selectedOrigins.remove(key);
-    }
     notifyListeners();
   }
 
@@ -302,7 +292,9 @@ class CanvasController extends ChangeNotifier implements Graph {
     if (hover) {
       _hovered.clear();
     } else {
-      _selected.clear();
+      final toDeselect = Set<Key>.from(_selected);
+      _selected.removeAll(toDeselect);
+      if (onDeselect != null) onDeselect!(getNodeList(toDeselect));
       _selectedOrigins.clear();
     }
     notifyListeners();

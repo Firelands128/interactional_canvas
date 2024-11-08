@@ -19,13 +19,13 @@ class Node<T> {
   late Offset offset;
   String? label;
   T? value;
-  final Widget child;
+  late Widget child;
   bool resizing = false;
   final bool allowMove;
 
   Rect get rect => offset & size;
 
-  void update({Size? size, Offset? offset, String? label}) {
+  void update({Size? size, Offset? offset, String? label, Widget? child}) {
     if (offset != null && (size != null || allowMove)) {
       this.offset = offset;
     }
@@ -35,5 +35,7 @@ class Node<T> {
     }
 
     if (label != null) this.label = label;
+
+    if (child != null) this.child = child;
   }
 }

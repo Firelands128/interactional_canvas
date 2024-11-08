@@ -17,7 +17,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  late CanvasController controller;
+  late final CanvasController controller;
   final gridSize = const Size.square(50);
 
   @override
@@ -37,7 +37,19 @@ class _MyAppState extends State<MyApp> {
         child: Circle(color: colors.randomColor()),
       );
     });
-    controller = CanvasController(nodes: nodes);
+    controller = CanvasController(
+      nodes: nodes,
+      onSelect: (selection) {
+        for (final node in selection) {
+          node.update(child: const Circle(color: Colors.blue));
+        }
+      },
+      onDeselect: (selection) {
+        for (final node in selection) {
+          node.update(child: Circle(color: RandomColor().randomColor()));
+        }
+      },
+    );
   }
 
   @override
