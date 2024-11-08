@@ -19,6 +19,8 @@ class CanvasController extends ChangeNotifier implements Graph {
     this.snapResizeToGrid = true,
     this.onSelect,
     this.onDeselect,
+    this.onHover,
+    this.onLeave,
   }) {
     if (nodes.isNotEmpty) {
       this.nodes.addAll(nodes);
@@ -33,6 +35,8 @@ class CanvasController extends ChangeNotifier implements Graph {
   bool snapResizeToGrid;
   final ValueChanged<List<Node>>? onSelect;
   final ValueChanged<List<Node>>? onDeselect;
+  final ValueChanged<List<Node>>? onHover;
+  final ValueChanged<List<Node>>? onLeave;
 
   double minScale = 0.4;
   double maxScale = 4;
@@ -259,8 +263,12 @@ class CanvasController extends ChangeNotifier implements Graph {
 
   void setSelection(Set<Key> keys, [bool hover = false]) {
     if (hover) {
-      _hovered.clear();
-      _hovered.addAll(keys);
+      final remove = _hovered.difference(keys);
+      final add = keys.difference(_hovered);
+      _hovered.removeAll(remove);
+      _hovered.addAll(add);
+      if (onHover != null) onHover!(getNodeList(add));
+      if (onLeave != null) onLeave!(getNodeList(remove));
     } else {
       final toDeselect = _selected.difference(keys);
       final toSelect = keys.difference(_selected);
@@ -283,7 +291,9 @@ class CanvasController extends ChangeNotifier implements Graph {
 
   void deselectAll([bool hover = false]) {
     if (hover) {
-      _hovered.clear();
+      final remove = Set<Key>.from(_hovered);
+      _hovered.removeAll(remove);
+      if (onLeave != null) onLeave!(getNodeList(remove));
     } else {
       final toDeselect = Set<Key>.from(_selected);
       _selected.removeAll(toDeselect);
