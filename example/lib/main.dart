@@ -78,9 +78,9 @@ class _MyAppState extends State<MyApp> {
                   const Positioned(
                     right: 10,
                     top: 10,
-                    child: SizedBox(
-                      width: 300,
-                      height: 300,
+                    width: 300,
+                    height: 300,
+                    child: IgnorePointer(
                       child: Text(
                         "Tips:\n"
                         "1.Holding \"Space\" and dragging to move the viewport.\n"
