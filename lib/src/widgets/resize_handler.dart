@@ -150,7 +150,7 @@ class _ResizeHandlerState extends State<ResizeHandler> {
       bottom: widget.alignment.isBottom ? 0 : null,
       child: Listener(
         behavior: HitTestBehavior.opaque,
-        onPointerDown: (details) {
+        onPointerDown: (_) {
           initialBounds = Rect.fromLTWH(
             node.offset.dx,
             node.offset.dy,
@@ -166,10 +166,10 @@ class _ResizeHandlerState extends State<ResizeHandler> {
           draggingOffset = Offset.zero;
           node.resizing = true;
         },
-        onPointerUp: (details) {
+        onPointerUp: (_) {
           node.resizing = false;
         },
-        onPointerCancel: (details) {
+        onPointerCancel: (_) {
           node.resizing = false;
         },
         onPointerMove: (details) {

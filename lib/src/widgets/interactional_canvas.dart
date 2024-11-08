@@ -227,7 +227,7 @@ class InteractionalCanvasState extends State<InteractionalCanvas> {
             controller.marqueeEnd = localPosition;
           }
         },
-        onPointerUp: (details) {
+        onPointerUp: (_) {
           controller.mouseDown = false;
           if (controller.marqueeStart != null && controller.marqueeEnd != null) {
             controller.checkMarqueeSelection();
@@ -235,7 +235,7 @@ class InteractionalCanvasState extends State<InteractionalCanvas> {
           controller.marqueeStart = null;
           controller.marqueeEnd = null;
         },
-        onPointerCancel: (details) {
+        onPointerCancel: (_) {
           controller.mouseDown = false;
         },
         onPointerHover: (details) {
