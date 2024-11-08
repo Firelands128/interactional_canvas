@@ -40,6 +40,7 @@ class CanvasController extends ChangeNotifier implements Graph {
 
   final Set<Key> _selected = {};
   final Set<Key> _hovered = {};
+  final Map<Key, Offset> _selectedOrigins = {};
 
   List<Node> get selection => nodes.where((e) => _selected.contains(e.key)).toList();
 
@@ -50,18 +51,12 @@ class CanvasController extends ChangeNotifier implements Graph {
   void _cacheSelectedOrigins() {
     _selectedOrigins.clear();
     for (final key in _selected) {
-      _cacheSelectedOrigin(key);
+      final index = nodes.indexWhere((e) => e.key == key);
+      if (index == -1) return;
+      final current = nodes[index];
+      _selectedOrigins[key] = current.offset;
     }
   }
-
-  void _cacheSelectedOrigin(Key key) {
-    final index = nodes.indexWhere((e) => e.key == key);
-    if (index == -1) return;
-    final current = nodes[index];
-    _selectedOrigins[key] = current.offset;
-  }
-
-  final Map<Key, Offset> _selectedOrigins = {};
 
   late final transform = TransformationController();
 
@@ -86,7 +81,7 @@ class CanvasController extends ChangeNotifier implements Graph {
 
     _formatter = value;
     _formatAll();
-    notifyListeners();
+    refreshCanvas();
   }
 
   bool _mouseDown = false;
@@ -96,7 +91,6 @@ class CanvasController extends ChangeNotifier implements Graph {
   set mouseDown(bool value) {
     if (value == _mouseDown) return;
     _mouseDown = value;
-    notifyListeners();
   }
 
   bool _shiftPressed = false;
@@ -106,7 +100,6 @@ class CanvasController extends ChangeNotifier implements Graph {
   set shiftPressed(bool value) {
     if (value == _shiftPressed) return;
     _shiftPressed = value;
-    notifyListeners();
   }
 
   bool _spacePressed = false;
@@ -116,7 +109,6 @@ class CanvasController extends ChangeNotifier implements Graph {
   set spacePressed(bool value) {
     if (value == _spacePressed) return;
     _spacePressed = value;
-    notifyListeners();
   }
 
   bool _controlPressed = false;
@@ -126,7 +118,6 @@ class CanvasController extends ChangeNotifier implements Graph {
   set controlPressed(bool value) {
     if (value == _controlPressed) return;
     _controlPressed = value;
-    notifyListeners();
   }
 
   bool _metaPressed = false;
@@ -136,7 +127,6 @@ class CanvasController extends ChangeNotifier implements Graph {
   set metaPressed(bool value) {
     if (value == _metaPressed) return;
     _metaPressed = value;
-    notifyListeners();
   }
 
   double _scale = 1;
@@ -146,6 +136,9 @@ class CanvasController extends ChangeNotifier implements Graph {
   set scale(double value) {
     if (value == _scale) return;
     _scale = value;
+  }
+
+  void refreshCanvas() {
     notifyListeners();
   }
 
@@ -196,7 +189,7 @@ class CanvasController extends ChangeNotifier implements Graph {
         setSelection({selection.last}, hover);
       }
     } else {
-      deselectAll(hover);
+      if (!shiftPressed) deselectAll(hover);
     }
   }
 
@@ -237,7 +230,7 @@ class CanvasController extends ChangeNotifier implements Graph {
         _formatter!(current);
       }
     }
-    notifyListeners();
+    refreshCanvas();
   }
 
   void dragSelection(Offset position, {Size? gridSize}) {
@@ -261,7 +254,7 @@ class CanvasController extends ChangeNotifier implements Graph {
         _formatter!(current);
       }
     }
-    notifyListeners();
+    refreshCanvas();
   }
 
   void setSelection(Set<Key> keys, [bool hover = false]) {
@@ -277,7 +270,7 @@ class CanvasController extends ChangeNotifier implements Graph {
       if (onSelect != null) onSelect!(getNodeList(toSelect));
       _cacheSelectedOrigins();
     }
-    notifyListeners();
+    refreshCanvas();
   }
 
   void selectAll() {
@@ -285,7 +278,7 @@ class CanvasController extends ChangeNotifier implements Graph {
     _selected.addAll(toSelect);
     if (onSelect != null) onSelect!(getNodeList(toSelect));
     _cacheSelectedOrigins();
-    notifyListeners();
+    refreshCanvas();
   }
 
   void deselectAll([bool hover = false]) {
@@ -297,7 +290,7 @@ class CanvasController extends ChangeNotifier implements Graph {
       if (onDeselect != null) onDeselect!(getNodeList(toDeselect));
       _selectedOrigins.clear();
     }
-    notifyListeners();
+    refreshCanvas();
   }
 
   void add(Node child) {
@@ -305,7 +298,7 @@ class CanvasController extends ChangeNotifier implements Graph {
       _formatter!(child);
     }
     nodes.add(child);
-    notifyListeners();
+    refreshCanvas();
   }
 
   void addAll(List<Node> children) {
@@ -315,7 +308,7 @@ class CanvasController extends ChangeNotifier implements Graph {
       }
     }
     nodes.addAll(children);
-    notifyListeners();
+    refreshCanvas();
   }
 
   void update(Node child) {
@@ -324,14 +317,14 @@ class CanvasController extends ChangeNotifier implements Graph {
     if (_formatter != null) {
       _formatter!(child);
     }
-    notifyListeners();
+    refreshCanvas();
   }
 
   void remove(Key key) {
     nodes.removeWhere((e) => e.key == key);
     _selected.remove(key);
     _selectedOrigins.remove(key);
-    notifyListeners();
+    refreshCanvas();
   }
 
   void bringForward() {
@@ -344,7 +337,7 @@ class CanvasController extends ChangeNotifier implements Graph {
       final current = nodes[index];
       nodes.removeAt(index);
       nodes.insert(index + 1, current);
-      notifyListeners();
+      refreshCanvas();
     }
   }
 
@@ -357,7 +350,7 @@ class CanvasController extends ChangeNotifier implements Graph {
       nodes.removeAt(index);
       nodes.add(current);
     }
-    notifyListeners();
+    refreshCanvas();
   }
 
   void sendBackward() {
@@ -370,7 +363,7 @@ class CanvasController extends ChangeNotifier implements Graph {
       final current = nodes[index];
       nodes.removeAt(index);
       nodes.insert(index - 1, current);
-      notifyListeners();
+      refreshCanvas();
     }
   }
 
@@ -383,7 +376,7 @@ class CanvasController extends ChangeNotifier implements Graph {
       nodes.removeAt(index);
       nodes.insert(0, current);
     }
-    notifyListeners();
+    refreshCanvas();
   }
 
   void deleteSelection() {
@@ -394,7 +387,7 @@ class CanvasController extends ChangeNotifier implements Graph {
       nodes.removeAt(index);
       _selectedOrigins.remove(key);
     }
-    notifyListeners();
+    refreshCanvas();
   }
 
   void zoom(double delta) {
@@ -404,7 +397,7 @@ class CanvasController extends ChangeNotifier implements Graph {
     matrix.scale(delta, delta);
     matrix.translate(-local.dx, -local.dy);
     transform.value = matrix;
-    notifyListeners();
+    refreshCanvas();
   }
 
   void zoomIn({double delta = 1.1}) {
@@ -426,7 +419,7 @@ class CanvasController extends ChangeNotifier implements Graph {
     final matrix = transform.value.clone();
     matrix.translate(delta.dx, delta.dy);
     transform.value = matrix;
-    notifyListeners();
+    refreshCanvas();
   }
 
   void panUp() {
@@ -470,20 +463,20 @@ class CanvasController extends ChangeNotifier implements Graph {
   void toggleKeepRatio() {
     final newKeepRatio = !keepRatio;
     keepRatio = newKeepRatio;
-    notifyListeners();
+    refreshCanvas();
   }
 
   void toggleShowGrid() {
     final newShowGridValue = !showGrid;
     showGrid = newShowGridValue;
-    notifyListeners();
+    refreshCanvas();
   }
 
   void toggleSnapToGrid() {
     final newSnapValue = !snapMovementToGrid;
     snapMovementToGrid = newSnapValue;
     snapResizeToGrid = newSnapValue;
-    notifyListeners();
+    refreshCanvas();
   }
 
   double _getClosestSnapPosition(double rawEdge, double nodeLength, double gridEdge) {

@@ -149,6 +149,7 @@ class _ResizeHandlerState extends State<ResizeHandler> {
               : null,
       bottom: widget.alignment.isBottom ? 0 : null,
       child: Listener(
+        behavior: HitTestBehavior.opaque,
         onPointerDown: (details) {
           initialBounds = Rect.fromLTWH(
             node.offset.dx,
@@ -174,6 +175,7 @@ class _ResizeHandlerState extends State<ResizeHandler> {
         onPointerMove: (details) {
           if (widget.controller.mouseDown) {
             onResize(details.delta / controller.scale);
+            controller.refreshCanvas();
           }
         },
         child: Container(
