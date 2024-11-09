@@ -1,3 +1,13 @@
+## 0.1.0
+
+Add ```onSelect```, ```onDeselect```, ```onHover```, ```onLeave``` callback function in ```CanvasController```.
+
+Add ```child``` parameter of ```update``` method of ```Node```.
+
+Holding ```shift``` to union selection when marquee selection.
+
+Optimize example app.
+
 ## 0.0.7
 
 Use transparency material type, instead of background color in theme.
