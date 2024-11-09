@@ -38,6 +38,7 @@ class CanvasController extends ChangeNotifier implements Graph {
   final ValueChanged<List<Node>>? onHover;
   final ValueChanged<List<Node>>? onLeave;
 
+  bool resizing = false;
   double minScale = 0.4;
   double maxScale = 4;
   final focusNode = FocusNode();
@@ -243,7 +244,6 @@ class CanvasController extends ChangeNotifier implements Graph {
       final index = nodes.indexWhere((e) => e.key == key);
       if (index == -1) continue;
       final current = nodes[index];
-      if (current.resizing) continue;
       final origin = _selectedOrigins[key];
       Offset offset = origin! + delta;
       if (snapMovementToGrid == true && gridSize != null) {

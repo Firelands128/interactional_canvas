@@ -20,7 +20,6 @@ class Node<T> {
   String? label;
   T? value;
   late Widget child;
-  bool resizing = false;
   final bool allowMove;
 
   Rect get rect => offset & size;

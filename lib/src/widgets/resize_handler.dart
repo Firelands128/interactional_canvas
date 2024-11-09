@@ -164,13 +164,13 @@ class _ResizeHandlerState extends State<ResizeHandler> {
             initialBounds.top + widget.minimumNodeSize.height,
           );
           draggingOffset = Offset.zero;
-          node.resizing = true;
+          controller.resizing = true;
         },
         onPointerUp: (_) {
-          node.resizing = false;
+          controller.resizing = false;
         },
         onPointerCancel: (_) {
-          node.resizing = false;
+          controller.resizing = false;
         },
         onPointerMove: (details) {
           if (widget.controller.mouseDown) {

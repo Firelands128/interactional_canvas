@@ -221,8 +221,7 @@ class InteractionalCanvasState extends State<InteractionalCanvas> {
           controller.mouseDown = true;
           controller.checkSelection(localPosition);
           if (controller.spacePressed) return;
-          if ((controller.selection.isNotEmpty && controller.shiftPressed) ||
-              (controller.selection.isEmpty)) {
+          if (controller.shiftPressed && !controller.resizing || controller.selection.isEmpty) {
             controller.marqueeStart = localPosition;
             controller.marqueeEnd = localPosition;
           }
@@ -243,8 +242,8 @@ class InteractionalCanvasState extends State<InteractionalCanvas> {
           controller.checkSelection(controller.mousePosition, true);
         },
         onPointerMove: (details) {
-          controller.marqueeEnd = controller.toLocal(details.localPosition);
           if (controller.marqueeStart != null && controller.marqueeEnd != null) {
+            controller.marqueeEnd = controller.toLocal(details.localPosition);
             controller.checkMarqueeSelection(true);
           }
         },
@@ -263,7 +262,9 @@ class InteractionalCanvasState extends State<InteractionalCanvas> {
                   controller.scale = controller.scale * details.scale;
                 } else if (controller.spacePressed) {
                   controller.pan(details.focalPointDelta / controller.scale);
-                } else if (controller.selection.isNotEmpty && !controller.shiftPressed) {
+                } else if (controller.selection.isNotEmpty &&
+                    !controller.shiftPressed &&
+                    !controller.resizing) {
                   controller.dragSelection(
                     controller.toLocal(details.focalPoint),
                     gridSize: widget.gridSize,
