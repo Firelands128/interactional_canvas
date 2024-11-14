@@ -12,6 +12,7 @@ class CanvasController extends ChangeNotifier {
   ValueSetter<bool>? setResizing;
   ValueGetter<bool>? isMouseDown;
   ValueGetter<bool>? isShiftPressed;
+  ValueGetter<Offset>? getMousePosition;
   ValueGetter<List<Node>>? getNodes;
   ValueGetter<List<Node>>? getSelection;
 
@@ -30,6 +31,8 @@ class CanvasController extends ChangeNotifier {
   bool get mouseDown => isMouseDown?.call() ?? false;
 
   bool get shiftPressed => isShiftPressed?.call() ?? false;
+
+  Offset get mousePosition => getMousePosition?.call() ?? const Offset(0, 0);
 
   List<Node> get nodes => getNodes?.call() ?? [];
 

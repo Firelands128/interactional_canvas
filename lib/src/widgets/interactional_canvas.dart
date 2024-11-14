@@ -101,6 +101,7 @@ class InteractionalCanvasState extends State<InteractionalCanvas> {
     controller.setResizing = (bool value) => resizing = value;
     controller.isMouseDown = () => mouseDown;
     controller.isShiftPressed = () => shiftPressed;
+    controller.getMousePosition = () => mousePosition;
     controller.getNodes = () => nodes;
     controller.getSelection = () => selection;
     controller.refresh = refresh;

@@ -67,7 +67,7 @@ class _MenusState extends State<Menus> {
             final node = Node(
               key: UniqueKey(),
               label: 'Node ${controller.nodes.length}',
-              offset: const Offset(0, 0),
+              offset: controller.mousePosition,
               size: Size.square(Random().nextDouble() * 200 + 100),
               child: Circle(color: RandomColor().randomColor()),
             );
@@ -83,7 +83,7 @@ class _MenusState extends State<Menus> {
             final node = Node(
               key: UniqueKey(),
               label: 'Node ${controller.nodes.length}',
-              offset: const Offset(0, 0),
+              offset: controller.mousePosition,
               size: Size(
                 Random().nextDouble() * 200 + 100,
                 Random().nextDouble() * 200 + 100,
@@ -102,7 +102,7 @@ class _MenusState extends State<Menus> {
             final node = Node(
               key: UniqueKey(),
               label: 'Node ${controller.nodes.length}',
-              offset: const Offset(0, 0),
+              offset: controller.mousePosition,
               size: Size(
                 Random().nextDouble() * 200 + 100,
                 Random().nextDouble() * 200 + 100,
