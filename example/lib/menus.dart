@@ -46,6 +46,8 @@ class _MenusState extends State<Menus> {
     super.dispose();
   }
 
+  CanvasController get controller => widget.controller;
+
   List<MenuEntry> get menuEntries {
     return [
       createMenu,
@@ -64,12 +66,12 @@ class _MenusState extends State<Menus> {
           onPressed: () {
             final node = Node(
               key: UniqueKey(),
-              label: 'Node ${widget.controller.nodes.length}',
-              offset: widget.controller.mousePosition,
+              label: 'Node ${controller.nodes.length}',
+              offset: const Offset(0, 0),
               size: Size.square(Random().nextDouble() * 200 + 100),
               child: Circle(color: RandomColor().randomColor()),
             );
-            widget.controller.add(node);
+            controller.add(node);
           },
           shortcut: const SingleActivator(
             LogicalKeyboardKey.keyC,
@@ -80,15 +82,15 @@ class _MenusState extends State<Menus> {
           onPressed: () {
             final node = Node(
               key: UniqueKey(),
-              label: 'Node ${widget.controller.nodes.length}',
-              offset: widget.controller.mousePosition,
+              label: 'Node ${controller.nodes.length}',
+              offset: const Offset(0, 0),
               size: Size(
                 Random().nextDouble() * 200 + 100,
                 Random().nextDouble() * 200 + 100,
               ),
               child: Triangle(color: RandomColor().randomColor()),
             );
-            widget.controller.add(node);
+            controller.add(node);
           },
           shortcut: const SingleActivator(
             LogicalKeyboardKey.keyT,
@@ -99,15 +101,15 @@ class _MenusState extends State<Menus> {
           onPressed: () {
             final node = Node(
               key: UniqueKey(),
-              label: 'Node ${widget.controller.nodes.length}',
-              offset: widget.controller.mousePosition,
+              label: 'Node ${controller.nodes.length}',
+              offset: const Offset(0, 0),
               size: Size(
                 Random().nextDouble() * 200 + 100,
                 Random().nextDouble() * 200 + 100,
               ),
               child: Rectangle(color: RandomColor().randomColor()),
             );
-            widget.controller.add(node);
+            controller.add(node);
           },
           shortcut: const SingleActivator(
             LogicalKeyboardKey.keyR,
@@ -123,49 +125,49 @@ class _MenusState extends State<Menus> {
       menuChildren: [
         MenuEntry(
           label: 'Zoom In',
-          onPressed: widget.controller.zoomIn,
+          onPressed: () => controller.zoomIn(),
           shortcut: const SingleActivator(
             LogicalKeyboardKey.equal,
           ),
         ),
         MenuEntry(
           label: 'Zoom Out',
-          onPressed: widget.controller.zoomOut,
+          onPressed: () => controller.zoomOut(),
           shortcut: const SingleActivator(
             LogicalKeyboardKey.minus,
           ),
         ),
         MenuEntry(
           label: 'Move Up',
-          onPressed: widget.controller.panUp,
+          onPressed: () => controller.panUp(),
           shortcut: const SingleActivator(
             LogicalKeyboardKey.arrowUp,
           ),
         ),
         MenuEntry(
           label: 'Move Down',
-          onPressed: widget.controller.panDown,
+          onPressed: () => controller.panDown(),
           shortcut: const SingleActivator(
             LogicalKeyboardKey.arrowDown,
           ),
         ),
         MenuEntry(
           label: 'Move Left',
-          onPressed: widget.controller.panLeft,
+          onPressed: () => controller.panLeft(),
           shortcut: const SingleActivator(
             LogicalKeyboardKey.arrowLeft,
           ),
         ),
         MenuEntry(
           label: 'Move Right',
-          onPressed: widget.controller.panRight,
+          onPressed: () => controller.panRight(),
           shortcut: const SingleActivator(
             LogicalKeyboardKey.arrowRight,
           ),
         ),
         MenuEntry(
           label: 'Reset',
-          onPressed: widget.controller.zoomReset,
+          onPressed: () => controller.zoomReset(),
           shortcut: const SingleActivator(
             LogicalKeyboardKey.keyR,
             meta: true,
@@ -182,7 +184,7 @@ class _MenusState extends State<Menus> {
       menuChildren: [
         MenuEntry(
           label: 'Select All',
-          onPressed: widget.controller.selectAll,
+          onPressed: () => controller.selectAll(),
           shortcut: const SingleActivator(
             LogicalKeyboardKey.keyA,
             meta: true,
@@ -190,7 +192,7 @@ class _MenusState extends State<Menus> {
         ),
         MenuEntry(
           label: 'Deselect All',
-          onPressed: widget.controller.deselectAll,
+          onPressed: () => controller.deselectAll(),
           shortcut: const SingleActivator(
             LogicalKeyboardKey.keyA,
             meta: true,
@@ -199,7 +201,7 @@ class _MenusState extends State<Menus> {
         ),
         MenuEntry(
           label: 'Bring forward',
-          onPressed: widget.controller.bringForward,
+          onPressed: () => controller.bringForward(),
           shortcut: const SingleActivator(
             LogicalKeyboardKey.bracketLeft,
             meta: true,
@@ -207,14 +209,14 @@ class _MenusState extends State<Menus> {
         ),
         MenuEntry(
           label: 'Bring to front',
-          onPressed: widget.controller.bringToFront,
+          onPressed: () => controller.bringToFront(),
           shortcut: const SingleActivator(
             LogicalKeyboardKey.bracketLeft,
           ),
         ),
         MenuEntry(
           label: 'Send backward',
-          onPressed: widget.controller.sendBackward,
+          onPressed: () => controller.sendBackward(),
           shortcut: const SingleActivator(
             LogicalKeyboardKey.bracketRight,
             meta: true,
@@ -222,7 +224,7 @@ class _MenusState extends State<Menus> {
         ),
         MenuEntry(
           label: 'Send to back',
-          onPressed: widget.controller.sendToBack,
+          onPressed: () => controller.sendToBack(),
           shortcut: const SingleActivator(
             LogicalKeyboardKey.bracketRight,
           ),
@@ -230,19 +232,19 @@ class _MenusState extends State<Menus> {
         MenuEntry(
           label: 'Rename',
           onPressed: () {
-            if (widget.controller.selection.isNotEmpty) {
-              widget.controller.focusNode.unfocus();
-              final initialValue = widget.controller.selection.first.label;
+            if (controller.selection.isNotEmpty) {
+              controller.focusNode?.unfocus();
+              final initialValue = controller.selection.first.label;
               prompt(
                 context,
                 title: 'Rename child',
                 value: initialValue,
               ).then((value) {
-                widget.controller.focusNode.requestFocus();
+                controller.focusNode?.requestFocus();
                 if (value == null) return;
-                for (final selection in widget.controller.selection) {
+                for (final selection in controller.selection) {
                   selection.update(label: value);
-                  widget.controller.update(selection);
+                  controller.update(selection);
                 }
               });
             }
@@ -262,7 +264,7 @@ class _MenusState extends State<Menus> {
             ).then(
               (value) {
                 if (!value) return;
-                widget.controller.deleteSelection();
+                controller.deleteSelection();
               },
             );
           },
@@ -281,18 +283,18 @@ class _MenusState extends State<Menus> {
       menuChildren: [
         MenuEntry(
           label: 'Keep Ratio',
-          isActivated: () => widget.controller.keepRatio,
-          onPressed: widget.controller.toggleKeepRatio,
+          isActivated: () => controller.keepRatio,
+          onPressed: () => controller.toggleKeepRatio(),
         ),
         MenuEntry(
           label: 'Show Grid',
-          isActivated: () => widget.controller.showGrid,
-          onPressed: widget.controller.toggleShowGrid,
+          isActivated: () => controller.showGrid,
+          onPressed: () => controller.toggleShowGrid(),
         ),
         MenuEntry(
           label: 'Snap To Grid',
-          isActivated: () => widget.controller.snapMovementToGrid,
-          onPressed: widget.controller.toggleSnapToGrid,
+          isActivated: () => controller.snapMovementToGrid,
+          onPressed: () => controller.toggleSnapToGrid(),
           shortcut: const SingleActivator(
             LogicalKeyboardKey.keyG,
             meta: true,

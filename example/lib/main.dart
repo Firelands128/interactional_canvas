@@ -17,16 +17,17 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  late final CanvasController controller;
+  final CanvasController controller = CanvasController();
   final gridSize = const Size.square(50);
+  late List<Node> nodes;
 
   @override
   void initState() {
     super.initState();
     // Generate random nodes
     final colors = RandomColor();
-    final nodes = List.generate(100, (index) {
-      return Node(
+    nodes = List.generate(100, (index) {
+      return Node<Circle>(
         key: UniqueKey(),
         label: 'Node $index',
         offset: Offset(
@@ -37,19 +38,6 @@ class _MyAppState extends State<MyApp> {
         child: Circle(color: colors.randomColor()),
       );
     });
-    controller = CanvasController(
-      nodes: nodes,
-      onSelect: (selection) {
-        for (final node in selection) {
-          node.update(child: const Circle(color: Colors.blue));
-        }
-      },
-      onDeselect: (selection) {
-        for (final node in selection) {
-          node.update(child: Circle(color: RandomColor().randomColor()));
-        }
-      },
-    );
   }
 
   @override
@@ -74,6 +62,17 @@ class _MyAppState extends State<MyApp> {
                     drawVisibleOnly: true,
                     controller: controller,
                     gridSize: gridSize,
+                    nodes: nodes,
+                    onSelect: (selection) {
+                      for (final node in selection) {
+                        node.update(child: node.child.update(color: Colors.blue));
+                      }
+                    },
+                    onDeselect: (selection) {
+                      for (final node in selection) {
+                        node.update(child: node.child.update(color: RandomColor().randomColor()));
+                      }
+                    },
                   ),
                   const Positioned(
                     right: 10,

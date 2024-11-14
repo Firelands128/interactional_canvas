@@ -6,7 +6,7 @@ import 'package:interactional_canvas/interactional_canvas.dart';
 import '../utils/utils.dart';
 
 class ResizeHandler extends StatefulWidget {
-  ResizeHandler({
+  const ResizeHandler({
     super.key,
     required this.controller,
     required this.node,
@@ -28,7 +28,6 @@ class ResizeHandler extends StatefulWidget {
 }
 
 class _ResizeHandlerState extends State<ResizeHandler> {
-  late final CanvasController controller;
   late final Node node;
 
   late Rect initialBounds;
@@ -38,9 +37,10 @@ class _ResizeHandlerState extends State<ResizeHandler> {
   @override
   void initState() {
     super.initState();
-    controller = widget.controller;
     node = widget.node;
   }
+
+  CanvasController get controller => widget.controller;
 
   void onResize(Offset delta) {
     draggingOffset = draggingOffset + delta;
@@ -173,9 +173,9 @@ class _ResizeHandlerState extends State<ResizeHandler> {
           controller.resizing = false;
         },
         onPointerMove: (details) {
-          if (widget.controller.mouseDown) {
+          if (controller.mouseDown) {
             onResize(details.delta / controller.scale);
-            controller.refreshCanvas();
+            controller.refresh();
           }
         },
         child: Container(

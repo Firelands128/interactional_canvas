@@ -11,6 +11,8 @@ class NodeRenderer extends StatelessWidget {
     required this.gridSize,
     required this.resizeMode,
     required this.resizeHandlerSize,
+    required this.isSelected,
+    required this.isHovered,
   });
 
   final Node node;
@@ -18,6 +20,8 @@ class NodeRenderer extends StatelessWidget {
   final Size gridSize;
   final ResizeMode resizeMode;
   final double resizeHandlerSize;
+  final bool isSelected;
+  final bool isHovered;
 
   static const double borderInset = 0;
 
@@ -33,8 +37,8 @@ class NodeRenderer extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
     final fonts = Theme.of(context).textTheme;
-    final showCornerHandles = resizeMode.containsCornerHandles && controller.isSelected(node.key);
-    final showEdgeHandles = resizeMode.containsEdgeHandles && controller.isSelected(node.key);
+    final showCornerHandles = resizeMode.containsCornerHandles && isSelected;
+    final showEdgeHandles = resizeMode.containsEdgeHandles && isSelected;
     return SizedBox.fromSize(
       size: node.size,
       child: Stack(clipBehavior: Clip.none, children: [
@@ -58,7 +62,7 @@ class NodeRenderer extends StatelessWidget {
               ),
             ),
           ),
-        if (controller.isSelected(node.key) || controller.isHovered(node.key))
+        if (isSelected || isHovered)
           Positioned(
             top: borderInset,
             left: borderInset,
@@ -68,7 +72,7 @@ class NodeRenderer extends StatelessWidget {
               child: Container(
                 decoration: BoxDecoration(
                   border: Border.all(
-                    color: controller.isSelected(node.key) ? colors.primary : colors.outline,
+                    color: isSelected ? colors.primary : colors.outline,
                     width: 1,
                   ),
                 ),

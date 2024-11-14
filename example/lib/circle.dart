@@ -3,13 +3,20 @@ import 'dart:math';
 import 'package:flutter/widgets.dart';
 import 'package:interactional_canvas/interactional_canvas.dart';
 
-class Circle extends StatelessWidget {
+import 'shape.dart';
+
+class Circle extends StatelessWidget implements NodeShape {
   const Circle({
     super.key,
     required this.color,
   });
 
   final Color color;
+
+  @override
+  Circle update({Color? color}) {
+    return Circle(color: color ?? this.color);
+  }
 
   @override
   Widget build(BuildContext context) {
