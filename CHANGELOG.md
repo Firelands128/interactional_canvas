@@ -1,3 +1,9 @@
+## 0.2.0
+
+Reconstruct project.
+
+Move all data and function from ```CanvasController``` to ```InteractionalCanvas```.
+
 ## 0.1.0
 
 Add ```onSelect```, ```onDeselect```, ```onHover```, ```onLeave``` callback function in ```CanvasController```.
