@@ -125,24 +125,6 @@ class InteractionalCanvasState extends State<InteractionalCanvas> {
     controller.toggleSnapToGrid = toggleSnapToGrid;
   }
 
-  // @override
-  // void didUpdateWidget(covariant InteractionalCanvas oldWidget) {
-  //   if (oldWidget.controller != controller) {
-  //     oldWidget.controller.removeListener(onUpdate);
-  //     controller.addListener(onUpdate);
-  //   }
-  //   if (oldWidget.drawVisibleOnly != widget.drawVisibleOnly ||
-  //       oldWidget.showGrid != widget.showGrid ||
-  //       oldWidget.backgroundBuilder != widget.backgroundBuilder ||
-  //       oldWidget.gridSize != widget.gridSize ||
-  //       oldWidget.resizeMode != widget.resizeMode ||
-  //       oldWidget.resizeHandlerSize != widget.resizeHandlerSize ||
-  //       oldWidget.nodes != widget.nodes) {
-  //     if (mounted) setState(() {});
-  //   }
-  //   super.didUpdateWidget(oldWidget);
-  // }
-
   @override
   void dispose() {
     controller.removeListener(_onUpdate);
