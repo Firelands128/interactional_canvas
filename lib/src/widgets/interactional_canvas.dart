@@ -104,6 +104,8 @@ class InteractionalCanvasState extends State<InteractionalCanvas> {
     controller.getMousePosition = () => mousePosition;
     controller.getNodes = () => nodes;
     controller.getSelection = () => selection;
+    controller.isSelected = isSelected;
+    controller.isHovered = isHovered;
     controller.refresh = refresh;
     controller.add = add;
     controller.update = update;
@@ -162,10 +164,6 @@ class InteractionalCanvasState extends State<InteractionalCanvas> {
     return rect;
   }
 
-  bool _isSelected(LocalKey key) => _selected.contains(key);
-
-  bool _isHovered(LocalKey key) => _hovered.contains(key);
-
   void _cacheSelectedOrigins() {
     _selectedOrigins.clear();
     for (final key in _selected) {
@@ -179,6 +177,10 @@ class InteractionalCanvasState extends State<InteractionalCanvas> {
   void _onUpdate() {
     if (mounted) setState(() {});
   }
+
+  bool isSelected(LocalKey key) => _selected.contains(key);
+
+  bool isHovered(LocalKey key) => _hovered.contains(key);
 
   void refresh() {
     controller.notify();
@@ -708,8 +710,8 @@ class InteractionalCanvasState extends State<InteractionalCanvas> {
                                       gridSize: widget.gridSize,
                                       resizeMode: widget.resizeMode,
                                       resizeHandlerSize: widget.resizeHandlerSize,
-                                      isSelected: _isSelected(e.key),
-                                      isHovered: _isHovered(e.key),
+                                      isSelected: isSelected(e.key),
+                                      isHovered: isHovered(e.key),
                                     ),
                                   ))
                               .toList(),

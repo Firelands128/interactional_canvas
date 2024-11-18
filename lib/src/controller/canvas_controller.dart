@@ -38,6 +38,8 @@ class CanvasController extends ChangeNotifier {
 
   List<Node> get selection => getSelection?.call() ?? [];
 
+  late bool Function(LocalKey key) isSelected;
+  late bool Function(LocalKey key) isHovered;
   late VoidCallback refresh;
   late ValueChanged<Node> add;
   late ValueChanged<Node> update;
