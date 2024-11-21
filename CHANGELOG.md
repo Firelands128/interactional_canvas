@@ -1,3 +1,15 @@
+## 0.2.1
+
+Add some callback function of ```InteractionalCanvas```.
+
+Expose ```isSelected``` and ```isHovered``` method through ```CanvasController```.
+
+Avoid updating ```mousePosition``` in ```InteractiveViewer```.
+
+Use ```localFocalPoint``` instead of ```focalPoint``` in ```InteractiveViewer```.
+
+Update pointer ```Listener``` callback function to enable multiple selection dragging.
+
 ## 0.2.0
 
 Reconstruct project.
