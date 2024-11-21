@@ -540,7 +540,6 @@ class InteractionalCanvasState extends State<InteractionalCanvas> {
         final snappedY = _getClosestSnapPosition(offset.dy, size.height, gridSize.height);
         offset = Offset(snappedX, snappedY);
       }
-
       current.update(offset: offset);
     }
     refresh();
@@ -669,8 +668,7 @@ class InteractionalCanvasState extends State<InteractionalCanvas> {
               panEnabled: canvasMoveEnabled,
               scaleEnabled: canvasMoveEnabled,
               onInteractionStart: (details) {
-                mousePosition = _toLocal(details.focalPoint);
-                mouseDragStart = mousePosition;
+                mouseDragStart = _toLocal(details.focalPoint);
               },
               onInteractionUpdate: (details) {
                 if (!mouseDown) {
@@ -680,7 +678,6 @@ class InteractionalCanvasState extends State<InteractionalCanvas> {
                 } else if (selection.isNotEmpty && !shiftPressed && !resizing) {
                   _dragSelection(_toLocal(details.focalPoint), gridSize: widget.gridSize);
                 }
-                mousePosition = _toLocal(details.focalPoint);
               },
               onInteractionEnd: (_) => mouseDragStart = null,
               minScale: minScale,
