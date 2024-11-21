@@ -30,6 +30,11 @@ class InteractionalCanvas extends StatefulWidget {
     this.resizeMode = ResizeMode.cornersAndEdges,
     this.resizeHandlerSize = 10,
     this.nodes = const [],
+    this.onAddNode,
+    this.onUpdateNode,
+    this.onRearrangeNode,
+    this.onMoveNodes,
+    this.onDeleteNodes,
     this.onSelect,
     this.onDeselect,
     this.onHover,
@@ -47,6 +52,11 @@ class InteractionalCanvas extends StatefulWidget {
   final ResizeMode resizeMode;
   final double resizeHandlerSize;
   final List<Node> nodes;
+  final ValueChanged<Node>? onAddNode;
+  final ValueChanged<Node>? onUpdateNode;
+  final ValueChanged<List<Node>>? onRearrangeNode;
+  final ValueChanged<List<Node>>? onMoveNodes;
+  final ValueChanged<List<Node>>? onDeleteNodes;
   final ValueChanged<List<Node>>? onSelect;
   final ValueChanged<List<Node>>? onDeselect;
   final ValueChanged<List<Node>>? onHover;
@@ -71,6 +81,7 @@ class InteractionalCanvasState extends State<InteractionalCanvas> {
   late bool snapMovementToGrid;
   late bool snapResizeToGrid;
   bool resizing = false;
+  bool dragging = false;
   bool mouseDown = false;
   bool shiftPressed = false;
   bool spacePressed = false;
@@ -186,22 +197,21 @@ class InteractionalCanvasState extends State<InteractionalCanvas> {
     controller.notify();
   }
 
-  void add(Node child) {
-    nodes.add(child);
+  void add(Node node) {
+    nodes.add(node);
+    if (widget.onAddNode != null) {
+      widget.onAddNode!(node);
+    }
     refresh();
   }
 
-  void update(Node child) {
-    final idx = nodes.indexWhere((e) => e.key == child.key);
+  void update(Node node) {
+    final idx = nodes.indexWhere((e) => e.key == node.key);
     if (idx == -1) return;
-    nodes[idx] = child;
-    refresh();
-  }
-
-  void remove(Key key) {
-    nodes.removeWhere((e) => e.key == key);
-    _selected.remove(key);
-    _selectedOrigins.remove(key);
+    nodes[idx] = node;
+    if (widget.onUpdateNode != null) {
+      widget.onUpdateNode!(node);
+    }
     refresh();
   }
 
@@ -293,6 +303,9 @@ class InteractionalCanvasState extends State<InteractionalCanvas> {
       final current = nodes[index];
       nodes.removeAt(index);
       nodes.insert(index + 1, current);
+      if (widget.onRearrangeNode != null) {
+        widget.onRearrangeNode!(nodes);
+      }
       refresh();
     }
   }
@@ -305,6 +318,9 @@ class InteractionalCanvasState extends State<InteractionalCanvas> {
       final current = nodes[index];
       nodes.removeAt(index);
       nodes.add(current);
+    }
+    if (widget.onRearrangeNode != null) {
+      widget.onRearrangeNode!(nodes);
     }
     refresh();
   }
@@ -319,6 +335,9 @@ class InteractionalCanvasState extends State<InteractionalCanvas> {
       final current = nodes[index];
       nodes.removeAt(index);
       nodes.insert(index - 1, current);
+      if (widget.onRearrangeNode != null) {
+        widget.onRearrangeNode!(nodes);
+      }
       refresh();
     }
   }
@@ -332,6 +351,9 @@ class InteractionalCanvasState extends State<InteractionalCanvas> {
       nodes.removeAt(index);
       nodes.insert(0, current);
     }
+    if (widget.onRearrangeNode != null) {
+      widget.onRearrangeNode!(nodes);
+    }
     refresh();
   }
 
@@ -342,6 +364,9 @@ class InteractionalCanvasState extends State<InteractionalCanvas> {
       if (index == -1) continue;
       nodes.removeAt(index);
       _selectedOrigins.remove(key);
+    }
+    if (widget.onDeleteNodes != null) {
+      widget.onDeleteNodes!(nodes);
     }
     refresh();
   }
@@ -373,6 +398,9 @@ class InteractionalCanvasState extends State<InteractionalCanvas> {
       final origin = current.offset;
       Offset offset = origin + delta;
       current.update(offset: offset);
+    }
+    if (widget.onMoveNodes != null) {
+      widget.onMoveNodes!(nodes);
     }
     refresh();
   }
@@ -676,10 +704,17 @@ class InteractionalCanvasState extends State<InteractionalCanvas> {
                 } else if (spacePressed) {
                   pan(details.focalPointDelta / scale);
                 } else if (selection.isNotEmpty && !shiftPressed && !resizing) {
+                  dragging = true;
                   _dragSelection(_toLocal(details.focalPoint), gridSize: widget.gridSize);
                 }
               },
-              onInteractionEnd: (_) => mouseDragStart = null,
+              onInteractionEnd: (_) {
+                mouseDragStart = null;
+                if (widget.onMoveNodes != null && dragging == true) {
+                  dragging = false;
+                  widget.onMoveNodes!(selection);
+                }
+              },
               minScale: minScale,
               maxScale: maxScale,
               boundaryMargin: const EdgeInsets.all(double.infinity),
