@@ -81,7 +81,6 @@ class InteractionalCanvasState extends State<InteractionalCanvas> {
   late bool snapMovementToGrid;
   late bool snapResizeToGrid;
   bool resizing = false;
-  bool dragging = false;
   bool mouseDown = false;
   bool shiftPressed = false;
   bool spacePressed = false;
@@ -275,7 +274,6 @@ class InteractionalCanvasState extends State<InteractionalCanvas> {
     final toSelect = nodes.map((e) => e.key).toSet().difference(_selected);
     _selected.addAll(toSelect);
     if (widget.onSelect != null) widget.onSelect!(_getNodeList(toSelect));
-    _cacheSelectedOrigins();
     refresh();
   }
 
@@ -486,24 +484,16 @@ class InteractionalCanvasState extends State<InteractionalCanvas> {
     }
   }
 
-  void _checkSelection(Offset localPosition, [bool hover = false]) {
+  List<Key> _checkNodes(Offset localPosition) {
     final offset = localPosition;
-    final selection = <Key>[];
+    final keys = <Key>[];
     for (final child in nodes) {
       final rect = child.rect;
       if (rect.contains(offset)) {
-        selection.add(child.key);
+        keys.add(child.key);
       }
     }
-    if (selection.isNotEmpty) {
-      if (shiftPressed) {
-        _setSelection({selection.last, ..._selected.toSet()}, hover);
-      } else {
-        _setSelection({selection.last}, hover);
-      }
-    } else {
-      if (!shiftPressed) deselectAll(hover);
-    }
+    return keys;
   }
 
   void _checkMarqueeSelection([bool hover = false]) {
@@ -541,7 +531,6 @@ class InteractionalCanvasState extends State<InteractionalCanvas> {
       _selected.addAll(toSelect);
       if (widget.onDeselect != null) widget.onDeselect!(_getNodeList(toDeselect));
       if (widget.onSelect != null) widget.onSelect!(_getNodeList(toSelect));
-      _cacheSelectedOrigins();
     }
     refresh();
   }
@@ -555,7 +544,8 @@ class InteractionalCanvasState extends State<InteractionalCanvas> {
   }
 
   void _dragSelection(Offset position, {Size? gridSize}) {
-    final delta = mouseDragStart != null ? position - mouseDragStart! : position;
+    assert(mouseDragStart != null);
+    final delta = position - mouseDragStart!;
     for (final key in _selected) {
       final index = nodes.indexWhere((e) => e.key == key);
       if (index == -1) continue;
@@ -659,33 +649,66 @@ class InteractionalCanvasState extends State<InteractionalCanvas> {
       },
       child: Listener(
         onPointerDown: (details) {
-          final localPosition = _toLocal(details.localPosition);
           mouseDown = true;
-          _checkSelection(localPosition);
-          if (spacePressed) return;
-          if (shiftPressed && !resizing || selection.isEmpty) {
-            marqueeStart = localPosition;
-            marqueeEnd = localPosition;
+          final localPosition = _toLocal(details.localPosition);
+          final keys = _checkNodes(localPosition);
+          if (keys.isNotEmpty) {
+            if (_selected.contains(keys.last)) {
+              mouseDragStart = localPosition;
+              _cacheSelectedOrigins();
+            } else {
+              if (shiftPressed) {
+                _setSelection({keys.last, ..._selected.toSet()}, false);
+              } else {
+                _setSelection({keys.last}, false);
+              }
+            }
+          } else {
+            if (!shiftPressed) deselectAll(false);
+            if (!spacePressed) {
+              marqueeStart = localPosition;
+              marqueeEnd = localPosition;
+            }
           }
         },
         onPointerUp: (_) {
           mouseDown = false;
+          if (widget.onMoveNodes != null && mouseDragStart != null) {
+            mouseDragStart = null;
+            widget.onMoveNodes!(selection);
+          }
           if (marqueeStart != null && marqueeEnd != null) {
             _checkMarqueeSelection();
+            marqueeStart = null;
+            marqueeEnd = null;
           }
-          marqueeStart = null;
-          marqueeEnd = null;
         },
         onPointerCancel: (_) {
           mouseDown = false;
+          mouseDragStart = null;
+          marqueeStart = null;
+          marqueeEnd = null;
         },
         onPointerHover: (details) {
           mousePosition = _toLocal(details.localPosition);
-          _checkSelection(mousePosition, true);
+          final selection = _checkNodes(mousePosition);
+          if (selection.isNotEmpty) {
+            if (shiftPressed) {
+              _setSelection({selection.last, ..._selected.toSet()}, true);
+            } else {
+              _setSelection({selection.last}, true);
+            }
+          } else {
+            if (!shiftPressed) deselectAll(true);
+          }
         },
         onPointerMove: (details) {
+          mousePosition = _toLocal(details.localPosition);
+          if (selection.isNotEmpty && mouseDragStart != null && !resizing) {
+            _dragSelection(mousePosition, gridSize: widget.gridSize);
+          }
           if (marqueeStart != null && marqueeEnd != null) {
-            marqueeEnd = _toLocal(details.localPosition);
+            marqueeEnd = mousePosition;
             _checkMarqueeSelection(true);
           }
         },
@@ -695,24 +718,11 @@ class InteractionalCanvasState extends State<InteractionalCanvas> {
               transformationController: transform,
               panEnabled: canvasMoveEnabled,
               scaleEnabled: canvasMoveEnabled,
-              onInteractionStart: (details) {
-                mouseDragStart = _toLocal(details.localFocalPoint);
-              },
               onInteractionUpdate: (details) {
                 if (!mouseDown) {
                   scale = scale * details.scale;
                 } else if (spacePressed) {
                   pan(details.focalPointDelta / scale);
-                } else if (selection.isNotEmpty && !shiftPressed && !resizing) {
-                  dragging = true;
-                  _dragSelection(_toLocal(details.localFocalPoint), gridSize: widget.gridSize);
-                }
-              },
-              onInteractionEnd: (_) {
-                mouseDragStart = null;
-                if (widget.onMoveNodes != null && dragging == true) {
-                  dragging = false;
-                  widget.onMoveNodes!(selection);
                 }
               },
               minScale: minScale,
