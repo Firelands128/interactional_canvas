@@ -696,7 +696,7 @@ class InteractionalCanvasState extends State<InteractionalCanvas> {
               panEnabled: canvasMoveEnabled,
               scaleEnabled: canvasMoveEnabled,
               onInteractionStart: (details) {
-                mouseDragStart = _toLocal(details.focalPoint);
+                mouseDragStart = _toLocal(details.localFocalPoint);
               },
               onInteractionUpdate: (details) {
                 if (!mouseDown) {
@@ -705,7 +705,7 @@ class InteractionalCanvasState extends State<InteractionalCanvas> {
                   pan(details.focalPointDelta / scale);
                 } else if (selection.isNotEmpty && !shiftPressed && !resizing) {
                   dragging = true;
-                  _dragSelection(_toLocal(details.focalPoint), gridSize: widget.gridSize);
+                  _dragSelection(_toLocal(details.localFocalPoint), gridSize: widget.gridSize);
                 }
               },
               onInteractionEnd: (_) {
