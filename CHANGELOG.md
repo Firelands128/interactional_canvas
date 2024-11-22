@@ -1,3 +1,13 @@
+## 0.2.2
+
+Update callback functions in ```CanvasController``` to nullable instead of ```late```.
+
+Make sure to reset states when pointer up.
+
+Avoid deselect when marquee selection with holding ```shift```.
+
+Clean hover effect even though ```shift``` is pressed.
+
 ## 0.2.1
 
 Add some callback function of ```InteractionalCanvas```.
