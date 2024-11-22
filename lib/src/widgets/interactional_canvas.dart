@@ -699,7 +699,7 @@ class InteractionalCanvasState extends State<InteractionalCanvas> {
               _setSelection({selection.last}, true);
             }
           } else {
-            if (!shiftPressed) deselectAll(true);
+            deselectAll(true);
           }
         },
         onPointerMove: (details) {
