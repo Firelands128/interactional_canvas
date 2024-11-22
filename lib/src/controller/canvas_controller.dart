@@ -38,28 +38,28 @@ class CanvasController extends ChangeNotifier {
 
   List<Node> get selection => getSelection?.call() ?? [];
 
-  late bool Function(LocalKey key) isSelected;
-  late bool Function(LocalKey key) isHovered;
-  late VoidCallback refresh;
-  late ValueChanged<Node> add;
-  late ValueChanged<Node> update;
-  late VoidCallback zoomIn;
-  late VoidCallback zoomOut;
-  late VoidCallback zoomReset;
-  late VoidCallback panUp;
-  late VoidCallback panDown;
-  late VoidCallback panLeft;
-  late VoidCallback panRight;
-  late VoidCallback selectAll;
-  late VoidCallback deselectAll;
-  late VoidCallback bringForward;
-  late VoidCallback bringToFront;
-  late VoidCallback sendBackward;
-  late VoidCallback sendToBack;
-  late VoidCallback deleteSelection;
-  late VoidCallback toggleKeepRatio;
-  late VoidCallback toggleShowGrid;
-  late VoidCallback toggleSnapToGrid;
+  bool Function(LocalKey key)? isSelected;
+  bool Function(LocalKey key)? isHovered;
+  VoidCallback? refresh;
+  ValueChanged<Node>? add;
+  ValueChanged<Node>? update;
+  VoidCallback? zoomIn;
+  VoidCallback? zoomOut;
+  VoidCallback? zoomReset;
+  VoidCallback? panUp;
+  VoidCallback? panDown;
+  VoidCallback? panLeft;
+  VoidCallback? panRight;
+  VoidCallback? selectAll;
+  VoidCallback? deselectAll;
+  VoidCallback? bringForward;
+  VoidCallback? bringToFront;
+  VoidCallback? sendBackward;
+  VoidCallback? sendToBack;
+  VoidCallback? deleteSelection;
+  VoidCallback? toggleKeepRatio;
+  VoidCallback? toggleShowGrid;
+  VoidCallback? toggleSnapToGrid;
 
   void notify() {
     notifyListeners();

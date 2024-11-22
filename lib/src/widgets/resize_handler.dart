@@ -175,7 +175,7 @@ class _ResizeHandlerState extends State<ResizeHandler> {
         onPointerMove: (details) {
           if (controller.mouseDown) {
             onResize(details.delta / controller.scale);
-            controller.refresh();
+            controller.refresh?.call();
           }
         },
         child: Container(
