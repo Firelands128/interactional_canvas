@@ -512,7 +512,7 @@ class InteractionalCanvasState extends State<InteractionalCanvas> {
         _setSelection(selection, hover);
       }
     } else {
-      deselectAll(hover);
+      refresh();
     }
   }
 
