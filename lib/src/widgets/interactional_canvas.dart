@@ -672,16 +672,16 @@ class InteractionalCanvasState extends State<InteractionalCanvas> {
           }
         },
         onPointerUp: (_) {
-          mouseDown = false;
-          if (widget.onMoveNodes != null && mouseDragStart != null) {
-            mouseDragStart = null;
+          if (widget.onMoveNodes != null) {
             widget.onMoveNodes!(selection);
           }
           if (marqueeStart != null && marqueeEnd != null) {
             _checkMarqueeSelection();
-            marqueeStart = null;
-            marqueeEnd = null;
           }
+          mouseDown = false;
+          mouseDragStart = null;
+          marqueeStart = null;
+          marqueeEnd = null;
         },
         onPointerCancel: (_) {
           mouseDown = false;
