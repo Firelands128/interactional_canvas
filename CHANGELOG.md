@@ -1,3 +1,15 @@
+## 0.2.3
+
+Add ```onResized``` callback function of ```InteractionalCanvas```
+
+Add judgement whether is resizing or not when pointer down.
+
+Pass selected node list as parameter to callback function.
+
+Avoid converting to list from set.
+
+Use conditional call.
+
 ## 0.2.2
 
 Update callback functions in ```CanvasController``` to nullable instead of ```late```.
