@@ -200,9 +200,7 @@ class InteractionalCanvasState extends State<InteractionalCanvas> {
 
   void add(Node node) {
     nodes.add(node);
-    if (widget.onAddNode != null) {
-      widget.onAddNode!(node);
-    }
+    widget.onAddNode?.call(node);
     refresh();
   }
 
@@ -210,9 +208,7 @@ class InteractionalCanvasState extends State<InteractionalCanvas> {
     final idx = nodes.indexWhere((e) => e.key == node.key);
     if (idx == -1) return;
     nodes[idx] = node;
-    if (widget.onUpdateNode != null) {
-      widget.onUpdateNode!(node);
-    }
+    widget.onUpdateNode?.call(node);
     refresh();
   }
 
@@ -275,7 +271,7 @@ class InteractionalCanvasState extends State<InteractionalCanvas> {
   void selectAll() {
     final toSelect = nodes.map((e) => e.key).toSet().difference(_selected);
     _selected.addAll(toSelect);
-    if (widget.onSelect != null) widget.onSelect!(_getNodeList(toSelect));
+    widget.onSelect?.call(_getNodeList(toSelect));
     refresh();
   }
 
@@ -283,11 +279,11 @@ class InteractionalCanvasState extends State<InteractionalCanvas> {
     if (hover) {
       final remove = Set<Key>.from(_hovered);
       _hovered.removeAll(remove);
-      if (widget.onLeave != null) widget.onLeave!(_getNodeList(remove));
+      widget.onLeave?.call(_getNodeList(remove));
     } else {
       final toDeselect = Set<Key>.from(_selected);
       _selected.removeAll(toDeselect);
-      if (widget.onDeselect != null) widget.onDeselect!(_getNodeList(toDeselect));
+      widget.onDeselect?.call(_getNodeList(toDeselect));
       _selectedOrigins.clear();
     }
     refresh();
@@ -303,9 +299,7 @@ class InteractionalCanvasState extends State<InteractionalCanvas> {
       final current = nodes[index];
       nodes.removeAt(index);
       nodes.insert(index + 1, current);
-      if (widget.onRearrangeNode != null) {
-        widget.onRearrangeNode!(nodes);
-      }
+      widget.onRearrangeNode?.call(nodes);
       refresh();
     }
   }
@@ -319,9 +313,7 @@ class InteractionalCanvasState extends State<InteractionalCanvas> {
       nodes.removeAt(index);
       nodes.add(current);
     }
-    if (widget.onRearrangeNode != null) {
-      widget.onRearrangeNode!(nodes);
-    }
+    widget.onRearrangeNode?.call(nodes);
     refresh();
   }
 
@@ -335,9 +327,7 @@ class InteractionalCanvasState extends State<InteractionalCanvas> {
       final current = nodes[index];
       nodes.removeAt(index);
       nodes.insert(index - 1, current);
-      if (widget.onRearrangeNode != null) {
-        widget.onRearrangeNode!(nodes);
-      }
+      widget.onRearrangeNode?.call(nodes);
       refresh();
     }
   }
@@ -351,9 +341,7 @@ class InteractionalCanvasState extends State<InteractionalCanvas> {
       nodes.removeAt(index);
       nodes.insert(0, current);
     }
-    if (widget.onRearrangeNode != null) {
-      widget.onRearrangeNode!(nodes);
-    }
+    widget.onRearrangeNode?.call(nodes);
     refresh();
   }
 
@@ -365,9 +353,7 @@ class InteractionalCanvasState extends State<InteractionalCanvas> {
       nodes.removeAt(index);
       _selectedOrigins.remove(key);
     }
-    if (widget.onDeleteNodes != null) {
-      widget.onDeleteNodes!(nodes);
-    }
+    widget.onDeleteNodes?.call(nodes);
     refresh();
   }
 
@@ -399,9 +385,7 @@ class InteractionalCanvasState extends State<InteractionalCanvas> {
       Offset offset = origin + delta;
       current.update(offset: offset);
     }
-    if (widget.onMoveNodes != null) {
-      widget.onMoveNodes!(nodes);
-    }
+    widget.onMoveNodes?.call(nodes);
     refresh();
   }
 
@@ -524,15 +508,15 @@ class InteractionalCanvasState extends State<InteractionalCanvas> {
       final add = keys.difference(_hovered);
       _hovered.removeAll(remove);
       _hovered.addAll(add);
-      if (widget.onHover != null) widget.onHover!(_getNodeList(add));
-      if (widget.onLeave != null) widget.onLeave!(_getNodeList(remove));
+      widget.onHover?.call(_getNodeList(add));
+      widget.onLeave?.call(_getNodeList(remove));
     } else {
       final toDeselect = _selected.difference(keys);
       final toSelect = keys.difference(_selected);
       _selected.removeAll(toDeselect);
       _selected.addAll(toSelect);
-      if (widget.onDeselect != null) widget.onDeselect!(_getNodeList(toDeselect));
-      if (widget.onSelect != null) widget.onSelect!(_getNodeList(toSelect));
+      widget.onDeselect?.call(_getNodeList(toDeselect));
+      widget.onSelect?.call(_getNodeList(toSelect));
     }
     refresh();
   }
@@ -622,9 +606,7 @@ class InteractionalCanvasState extends State<InteractionalCanvas> {
 
   Widget _buildBackground(BuildContext context, Quad quad) {
     final viewport = _axisAlignedBoundingBox(quad);
-    if (widget.backgroundBuilder != null) {
-      return widget.backgroundBuilder!(context, viewport);
-    }
+    widget.backgroundBuilder?.call(context, viewport);
     return GridBackground(
       cellWidth: widget.gridSize.width,
       cellHeight: widget.gridSize.height,
@@ -674,8 +656,8 @@ class InteractionalCanvasState extends State<InteractionalCanvas> {
           }
         },
         onPointerUp: (_) {
-          if (widget.onMoveNodes != null) {
-            widget.onMoveNodes!(selection);
+          if (mouseDragStart != null) {
+            widget.onMoveNodes?.call(selection);
           }
           if (marqueeStart != null && marqueeEnd != null) {
             _checkMarqueeSelection();
