@@ -299,7 +299,7 @@ class InteractionalCanvasState extends State<InteractionalCanvas> {
       final current = nodes[index];
       nodes.removeAt(index);
       nodes.insert(index + 1, current);
-      widget.onRearrangeNode?.call(nodes);
+      widget.onRearrangeNode?.call(selection);
       refresh();
     }
   }
@@ -313,7 +313,7 @@ class InteractionalCanvasState extends State<InteractionalCanvas> {
       nodes.removeAt(index);
       nodes.add(current);
     }
-    widget.onRearrangeNode?.call(nodes);
+    widget.onRearrangeNode?.call(selection);
     refresh();
   }
 
@@ -327,7 +327,7 @@ class InteractionalCanvasState extends State<InteractionalCanvas> {
       final current = nodes[index];
       nodes.removeAt(index);
       nodes.insert(index - 1, current);
-      widget.onRearrangeNode?.call(nodes);
+      widget.onRearrangeNode?.call(selection);
       refresh();
     }
   }
@@ -341,7 +341,7 @@ class InteractionalCanvasState extends State<InteractionalCanvas> {
       nodes.removeAt(index);
       nodes.insert(0, current);
     }
-    widget.onRearrangeNode?.call(nodes);
+    widget.onRearrangeNode?.call(selection);
     refresh();
   }
 
@@ -353,7 +353,7 @@ class InteractionalCanvasState extends State<InteractionalCanvas> {
       nodes.removeAt(index);
       _selectedOrigins.remove(key);
     }
-    widget.onDeleteNodes?.call(nodes);
+    widget.onDeleteNodes?.call(selection);
     refresh();
   }
 
@@ -385,7 +385,7 @@ class InteractionalCanvasState extends State<InteractionalCanvas> {
       Offset offset = origin + delta;
       current.update(offset: offset);
     }
-    widget.onMoveNodes?.call(nodes);
+    widget.onMoveNodes?.call(selection);
     refresh();
   }
 
