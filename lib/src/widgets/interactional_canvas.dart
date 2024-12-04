@@ -629,6 +629,7 @@ class InteractionalCanvasState extends State<InteractionalCanvas> {
       child: Listener(
         onPointerDown: (details) {
           mouseDown = true;
+          if (resizing) return;
           final localPosition = _toLocal(details.localPosition);
           final keys = _checkNodes(localPosition);
           if (keys.isNotEmpty) {
