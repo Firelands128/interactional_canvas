@@ -13,6 +13,7 @@ class NodeRenderer extends StatelessWidget {
     required this.resizeHandlerSize,
     required this.isSelected,
     required this.isHovered,
+    required this.onResized,
   });
 
   final Node node;
@@ -22,6 +23,7 @@ class NodeRenderer extends StatelessWidget {
   final double resizeHandlerSize;
   final bool isSelected;
   final bool isHovered;
+  final ValueChanged<Node>? onResized;
 
   static const double borderInset = 0;
 
@@ -104,6 +106,7 @@ class NodeRenderer extends StatelessWidget {
       gridSize: gridSize,
       size: resizeHandlerSize,
       minimumNodeSize: minimumNodeSize,
+      onResized: onResized,
     );
   }
 }

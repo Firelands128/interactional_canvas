@@ -14,6 +14,7 @@ class ResizeHandler extends StatefulWidget {
     required this.gridSize,
     required this.size,
     required this.minimumNodeSize,
+    required this.onResized,
   });
 
   final CanvasController controller;
@@ -22,6 +23,7 @@ class ResizeHandler extends StatefulWidget {
   final Size gridSize;
   final double size;
   final Size minimumNodeSize;
+  final ValueChanged<Node>? onResized;
 
   @override
   State<ResizeHandler> createState() => _ResizeHandlerState();
@@ -168,6 +170,7 @@ class _ResizeHandlerState extends State<ResizeHandler> {
         },
         onPointerUp: (_) {
           controller.resizing = false;
+          widget.onResized?.call(node);
         },
         onPointerCancel: (_) {
           controller.resizing = false;

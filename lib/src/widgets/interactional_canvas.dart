@@ -32,6 +32,7 @@ class InteractionalCanvas extends StatefulWidget {
     this.nodes = const [],
     this.onAddNode,
     this.onUpdateNode,
+    this.onResized,
     this.onRearrangeNode,
     this.onMoveNodes,
     this.onDeleteNodes,
@@ -54,6 +55,7 @@ class InteractionalCanvas extends StatefulWidget {
   final List<Node> nodes;
   final ValueChanged<Node>? onAddNode;
   final ValueChanged<Node>? onUpdateNode;
+  final ValueChanged<Node>? onResized;
   final ValueChanged<List<Node>>? onRearrangeNode;
   final ValueChanged<List<Node>>? onMoveNodes;
   final ValueChanged<List<Node>>? onDeleteNodes;
@@ -752,6 +754,7 @@ class InteractionalCanvasState extends State<InteractionalCanvas> {
                                       gridSize: widget.gridSize,
                                       resizeMode: widget.resizeMode,
                                       resizeHandlerSize: widget.resizeHandlerSize,
+                                      onResized: widget.onResized,
                                       isSelected: isSelected(e.key),
                                       isHovered: isHovered(e.key),
                                     ),
