@@ -290,9 +290,8 @@ class InteractionalCanvasState extends State<InteractionalCanvas> {
   }
 
   void bringForward() {
-    final selection = _selected.toList();
-    if (selection.length == 1) {
-      final key = selection.first;
+    if (_selected.length == 1) {
+      final key = _selected.first;
       final index = nodes.indexWhere((e) => e.key == key);
       if (index == -1) return;
       if (index == nodes.length - 1) return;
@@ -305,8 +304,7 @@ class InteractionalCanvasState extends State<InteractionalCanvas> {
   }
 
   void bringToFront() {
-    final selection = _selected.toList();
-    for (final key in selection) {
+    for (final key in _selected) {
       final index = nodes.indexWhere((e) => e.key == key);
       if (index == -1) continue;
       final current = nodes[index];
@@ -318,9 +316,8 @@ class InteractionalCanvasState extends State<InteractionalCanvas> {
   }
 
   void sendBackward() {
-    final selection = _selected.toList();
-    if (selection.length == 1) {
-      final key = selection.first;
+    if (_selected.length == 1) {
+      final key = _selected.first;
       final index = nodes.indexWhere((e) => e.key == key);
       if (index == -1) return;
       if (index == 0) return;
@@ -333,8 +330,7 @@ class InteractionalCanvasState extends State<InteractionalCanvas> {
   }
 
   void sendToBack() {
-    final selection = _selected.toList();
-    for (final key in selection) {
+    for (final key in _selected) {
       final index = nodes.indexWhere((e) => e.key == key);
       if (index == -1) continue;
       final current = nodes[index];
@@ -346,8 +342,7 @@ class InteractionalCanvasState extends State<InteractionalCanvas> {
   }
 
   void deleteSelection() {
-    final selection = _selected.toList();
-    for (final key in selection) {
+    for (final key in _selected) {
       final index = nodes.indexWhere((e) => e.key == key);
       if (index == -1) continue;
       nodes.removeAt(index);
