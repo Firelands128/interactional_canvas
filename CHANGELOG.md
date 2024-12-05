@@ -1,3 +1,7 @@
+## 0.2.4
+
+Update ```LocalKey``` to ```ValueKey```, and use ```UUID``` as value of ```ValueKey``` in example app.
+
 ## 0.2.3
 
 Add ```onResized``` callback function of ```InteractionalCanvas```
