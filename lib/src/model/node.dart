@@ -11,7 +11,7 @@ class Node<T> {
     this.allowMove = true,
   });
 
-  final LocalKey key;
+  final ValueKey key;
   late Size size;
   late Offset offset;
   late T child;

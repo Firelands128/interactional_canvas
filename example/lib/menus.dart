@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:interactional_canvas/interactional_canvas.dart';
 import 'package:random_color/random_color.dart';
+import 'package:uuid/uuid.dart';
 
 import 'actions.dart';
 import 'circle.dart';
@@ -65,7 +66,7 @@ class _MenusState extends State<Menus> {
           label: 'Circle',
           onPressed: () {
             final node = Node(
-              key: UniqueKey(),
+              key: ValueKey(const Uuid().v1()),
               label: 'Node ${controller.nodes.length}',
               offset: controller.mousePosition,
               size: Size.square(Random().nextDouble() * 200 + 100),
@@ -81,7 +82,7 @@ class _MenusState extends State<Menus> {
           label: 'Triangle',
           onPressed: () {
             final node = Node(
-              key: UniqueKey(),
+              key: ValueKey(const Uuid().v1()),
               label: 'Node ${controller.nodes.length}',
               offset: controller.mousePosition,
               size: Size(
@@ -100,7 +101,7 @@ class _MenusState extends State<Menus> {
           label: 'Rectangle',
           onPressed: () {
             final node = Node(
-              key: UniqueKey(),
+              key: ValueKey(const Uuid().v1()),
               label: 'Node ${controller.nodes.length}',
               offset: controller.mousePosition,
               size: Size(

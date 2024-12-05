@@ -36,6 +36,7 @@ dependencies:
   interactional_canvas:
     path: ..
   random_color: ^1.0.6-nullsafety
+  uuid: ^4.5.1
 
 dev_dependencies:
   flutter_test:

@@ -190,9 +190,9 @@ class InteractionalCanvasState extends State<InteractionalCanvas> {
     if (mounted) setState(() {});
   }
 
-  bool isSelected(LocalKey key) => _selected.contains(key);
+  bool isSelected(ValueKey key) => _selected.contains(key);
 
-  bool isHovered(LocalKey key) => _hovered.contains(key);
+  bool isHovered(ValueKey key) => _hovered.contains(key);
 
   void refresh() {
     controller.notify();

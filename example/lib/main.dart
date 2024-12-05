@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:interactional_canvas/interactional_canvas.dart';
 import 'package:random_color/random_color.dart';
+import 'package:uuid/uuid.dart';
 
 import 'circle.dart';
 import 'menus.dart';
@@ -28,7 +29,7 @@ class _MyAppState extends State<MyApp> {
     final colors = RandomColor();
     nodes = List.generate(100, (index) {
       return Node<Circle>(
-        key: UniqueKey(),
+        key: ValueKey(const Uuid().v1()),
         label: 'Node $index',
         offset: Offset(
           Random().nextDouble() * 5000,
