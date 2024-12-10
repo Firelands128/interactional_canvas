@@ -18,7 +18,7 @@ class Node<T> {
   String? label;
   final bool allowMove;
 
-  String get id => key.toString();
+  String get id => key.value;
 
   Rect get rect => offset & size;
 
