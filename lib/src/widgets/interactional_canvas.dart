@@ -562,14 +562,14 @@ class InteractionalCanvasState extends State<InteractionalCanvas> {
     if (widget.drawVisibleOnly) {
       final nodes = <Node>[];
       final viewport = _getRect(constraints);
-      for (final node in widget.nodes) {
+      for (final node in this.nodes) {
         if (node.rect.overlaps(viewport)) {
           nodes.add(node);
         }
       }
       return nodes;
     }
-    return widget.nodes;
+    return nodes;
   }
 
   Rect _axisAlignedBoundingBox(Quad quad) {
