@@ -30,19 +30,13 @@ class ResizeHandler extends StatefulWidget {
 }
 
 class _ResizeHandlerState extends State<ResizeHandler> {
-  late final Node node;
-
   late Rect initialBounds;
   late Rect minimumSizeBounds;
   late Offset draggingOffset;
 
-  @override
-  void initState() {
-    super.initState();
-    node = widget.node;
-  }
-
   CanvasController get controller => widget.controller;
+
+  Node get node => widget.node;
 
   void onResize(Offset delta) {
     draggingOffset = draggingOffset + delta;
