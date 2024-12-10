@@ -1,3 +1,9 @@
+## 0.2.5
+
+Use ```ValueKey```'s value as ```id``` of ```Node```.
+
+Remove ```node``` state in ```ResizeHandler```, and use widget property instead.
+
 ## 0.2.4
 
 Update ```LocalKey``` to ```ValueKey```, and use ```UUID``` as value of ```ValueKey``` in example app.
